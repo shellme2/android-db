@@ -1,0 +1,1 @@
+include ':BfcDbDemo', ':BfcDbSdk', ':BfcDbGenerator', ':BfcDbGeneratorDemo'

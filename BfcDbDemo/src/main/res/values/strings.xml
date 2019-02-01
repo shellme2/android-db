@@ -1,0 +1,9 @@
+<resources>
+
+    <string-array name="find_types_array">
+        <item>  =  </item>
+        <item> LIKE </item>
+    </string-array>
+
+    <string name="app_name">数据库Demo</string>
+</resources>

@@ -1,0 +1,103 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion bfcBuildConfig.compileSdkVersion
+    buildToolsVersion bfcBuildConfig.buildToolsVersion
+
+    lintOptions {
+        abortOnError false
+    }
+
+    // 签名
+    signingConfigs {
+        release {
+            keyAlias bfcBuildConfig.signing["keyAlias"]
+            keyPassword bfcBuildConfig.signing["keyPassword"]
+            storeFile file('keystore.jks')
+            storePassword bfcBuildConfig.signing["storePassword"]
+        }
+    }
+
+    defaultConfig {
+        applicationId rootProject.ext.android.applicationId
+        minSdkVersion bfcBuildConfig.minSdkVersion
+        targetSdkVersion bfcBuildConfig.targetSdkVersion
+        versionCode VERSION_CODE
+        versionName VERSION_NAME
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            // zipAlign优化
+            zipAlignEnabled true
+            // 移除无用的resource文件
+            shrinkResources false
+            // 混淆
+            minifyEnabled false
+            // 加载默认混淆配置文件
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            // 签名
+            signingConfig signingConfigs.release
+        }
+    }
+
+    /*productFlavors {
+        // demo1
+        downloadDemo1 {
+            applicationId 'com.eebbk.bfc.download.demo'
+            versionCode  rootProject.ext.android.versionCode
+            versionName  rootProject.ext.android.versionName
+        }
+        // demo2
+        downloadDemo2 {
+            applicationId 'com.eebbk.bfc.download.demo2'
+            versionCode  rootProject.ext.android.versionCode
+        }
+
+        // demo3
+        downloadDemo3 {
+            applicationId 'com.eebbk.bfc.download.demo3'
+            versionCode  rootProject.ext.android.versionCode
+            versionName  rootProject.ext.android.versionName
+        }
+
+    }*/
+
+    // 修改apk名称，并放到apk目录下
+    android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('-release.apk')) {
+                def fileName = outputFile.name;
+                fileName = fileName.replace("-release.apk", "-unencrypted.apk")
+                output.outputFile = new File(file('./../apk'), fileName)
+                println "输出文件位置： " + output.outputFile
+            }
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    testCompile bfcBuildConfig.deps["junit"]
+
+    compile rootProject.ext.dependencies["appcompat-v7"]
+    // 导入下载sdk包
+    //compile rootProject.ext.dependencies["bfc-db"]
+    compile project(':BfcDbSdk')
+
+
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    // 只在debug模式下工作
+    debugCompile bfcBuildConfig.deps["bfc-blockcanary"]
+    // 下单版本和自动化测试模式下，屏蔽掉blockcanary，因为该库在检查卡顿问题时会导致应用的性能问题，应谨慎使用
+    releaseCompile bfcBuildConfig.deps["bfc-blockcanary-no-op"]
+    testCompile bfcBuildConfig.deps["bfc-blockcanary-no-op"]
+}

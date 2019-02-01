@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.eebbk.bfc.db.demo">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <application
+        android:name=".DemoApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <activity
+            android:name=".baseui.MainActivity"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="sensorPortrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <!-- 基本功能测试界面 -->
+        <activity
+            android:name=".basic.ui.BasicFunctionTestActivity"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="sensorPortrait"/>
+        <!-- 安全测试界面 -->
+        <activity
+            android:name=".safe.SafeTestActivity"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="sensorPortrait"/>
+        <!-- 性能测试界面 -->
+        <activity
+            android:name=".performance.PerformanceTestActivity"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="sensorPortrait"/>
+        <!-- 极限测试界面 -->
+        <activity
+            android:name=".limit.ui.LimitTestActivity"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="sensorPortrait"/>
+        <!-- 其他测试界面 -->
+        <activity
+            android:name=".other.OtherTestActivity"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="sensorPortrait"/>
+
+        <activity
+            android:name=".basic.ui.BasicOperationActivity"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="sensorPortrait"/>
+
+        <activity
+            android:name=".basic.ui.ShowVersionInfoActivity"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="sensorPortrait"/>
+    </application>
+
+</manifest>
